@@ -5,69 +5,31 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useStore } from "@/components/store-provider"
 import {
-  LayoutDashboard,
-  Package,
-  Boxes,
-  Tags,
-  Truck,
-  Users,
-  FileBarChart,
   LogOut,
   ChevronLeft,
   ChevronRight,
   ShoppingCart,
-  Settings,
-  CreditCard,
-  Receipt,
-  CalendarDays,
-  Coins,
-  UserCircle,
-  Database,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
-
-type NavItem = {
-  name: string
-  href: string
-  icon: typeof LayoutDashboard
-  adminOnly?: boolean
-  minRole?: "admin" | "manager"
-}
-
-const navigation: NavItem[] = [
-  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Punto de Venta", href: "/dashboard/pos", icon: CreditCard, minRole: "manager" },
-  { name: "Facturas", href: "/dashboard/invoices", icon: Receipt, minRole: "manager" },
-  { name: "Caja", href: "/dashboard/cash", icon: Coins, minRole: "manager" },
-  { name: "Productos", href: "/dashboard/products", icon: Package },
-  { name: "Inventario", href: "/dashboard/inventory", icon: Boxes },
-  { name: "Clientes", href: "/dashboard/clients", icon: UserCircle, minRole: "manager" },
-  { name: "Categorias", href: "/dashboard/categories", icon: Tags, adminOnly: true },
-  { name: "Proveedores", href: "/dashboard/suppliers", icon: Truck, adminOnly: true },
-  { name: "Calendario", href: "/dashboard/calendar", icon: CalendarDays, minRole: "manager" },
-  { name: "Reportes", href: "/dashboard/reports", icon: FileBarChart },
-  { name: "Base de Datos", href: "/dashboard/database", icon: Database, adminOnly: true },
-  { name: "Usuarios", href: "/dashboard/users", icon: Users, adminOnly: true },
-  { name: "Configuracion", href: "/dashboard/settings", icon: Settings, adminOnly: true },
-]
+import { navigationItems } from "@/lib/navigation-items"
 
 export function Sidebar() {
   const pathname = usePathname()
   const { currentUser, logout } = useStore()
   const [collapsed, setCollapsed] = useState(false)
 
-  const filteredNav = navigation.filter((item) => {
-    if (item.adminOnly && currentUser?.role !== "admin") return false
-    if (item.minRole === "manager" && currentUser?.role === "viewer") return false
-    return true
+  const filteredNav = navigationItems.filter((item) => {
+    if (!currentUser) return false
+    return item.roles.includes(currentUser.role)
   })
 
   return (
     <div
       className={cn(
-        "flex flex-col shrink-0 transition-all duration-300",
+        "flex flex-col shrink-0 transition-all duration-300 z-50",
         collapsed ? "w-16" : "w-64",
+        "fixed inset-y-0 left-0 lg:static lg:inset-auto"
       )}
       style={{
         backgroundColor: "#1a3a2a",

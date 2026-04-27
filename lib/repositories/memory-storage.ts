@@ -52,9 +52,10 @@ function getCurrentTimestamp(): string {
 }
 
 // Check if running in development mode
-const isDev = process.env.NODE_ENV === "development"
+const _isDev = process.env.NODE_ENV === "development"
+const STORAGE_KEY = "supert_database"
 
-// In-memory data store
+// In-memory data store with LocalStorage persistence
 class MemoryStore {
   users: User[] = []
   categories: Category[] = []
@@ -93,16 +94,71 @@ class MemoryStore {
     currentCreditNoteNumber: 1,
   }
   initialized = false
+  private isPersistenceAllowed = false
 
   private listeners: Set<() => void> = new Set()
+
+  constructor() {
+    this.load()
+  }
 
   subscribe(listener: () => void): () => void {
     this.listeners.add(listener)
     return () => this.listeners.delete(listener)
   }
 
-  notify(): void {
+  notify(isDataEntry = true): void {
+    if (isDataEntry) {
+      this.isPersistenceAllowed = true
+    }
+
+    if (this.isPersistenceAllowed) {
+      this.persist()
+    }
+
     this.listeners.forEach((listener) => listener())
+  }
+
+  persist(): void {
+    if (typeof window !== "undefined") {
+      const data = {
+        users: this.users,
+        categories: this.categories,
+        suppliers: this.suppliers,
+        products: this.products,
+        stock: this.stock,
+        movements: this.movements,
+        priceHistory: this.priceHistory,
+        promotions: this.promotions,
+        alertConfig: this.alertConfig,
+        emailAlerts: this.emailAlerts,
+        cashConcepts: this.cashConcepts,
+        cashMovements: this.cashMovements,
+        cashClosings: this.cashClosings,
+        clients: this.clients,
+        invoices: this.invoices,
+        creditNotes: this.creditNotes,
+        calendarEvents: this.calendarEvents,
+        settings: this.settings,
+        initialized: this.initialized,
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+    }
+  }
+
+  load(): void {
+    if (typeof window !== "undefined") {
+      const data = localStorage.getItem(STORAGE_KEY)
+      if (data) {
+        try {
+          const parsed = JSON.parse(data)
+          Object.assign(this, parsed)
+          this.isPersistenceAllowed = true
+        } catch (e) {
+          console.error("Failed to load database from localStorage", e)
+        }
+      }
+    }
   }
 }
 
@@ -1138,7 +1194,10 @@ export function createMemoryStorage(): DataStorage {
       }
 
       store.initialized = true
-      store.notify()
+      // We do NOT call notify() here to avoid creating the localStorage entry
+      // before the first user-driven data entry.
+      // We call notify(false) just to trigger listeners without persisting.
+      store.notify(false)
     },
     async exportData(): Promise<string> {
       const store = getStore()
