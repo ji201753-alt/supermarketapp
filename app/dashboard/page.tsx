@@ -14,17 +14,6 @@ import {
   ArrowRight, 
   Boxes, 
   Tag,
-  CreditCard,
-  Receipt,
-  Coins,
-  Users,
-  FileBarChart,
-  CalendarDays,
-  Settings,
-  UserCircle,
-  Tags,
-  Truck,
-  Database
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -32,23 +21,7 @@ import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell } from "recharts"
 import { cn } from "@/lib/utils"
-
-// Menu items for icon grid
-const menuItems = [
-  { key: "1", label: "Punto de Venta", href: "/dashboard/pos", icon: CreditCard, color: "text-primary", roles: ["admin", "manager"] },
-  { key: "2", label: "Facturas", href: "/dashboard/invoices", icon: Receipt, color: "text-blue-500", roles: ["admin", "manager"] },
-  { key: "3", label: "Caja", href: "/dashboard/cash", icon: Coins, color: "text-amber-500", roles: ["admin", "manager"] },
-  { key: "4", label: "Productos", href: "/dashboard/products", icon: Package, color: "text-emerald-500", roles: ["admin", "manager", "viewer"] },
-  { key: "5", label: "Inventario", href: "/dashboard/inventory", icon: Boxes, color: "text-purple-500", roles: ["admin", "manager", "viewer"] },
-  { key: "6", label: "Clientes", href: "/dashboard/clients", icon: UserCircle, color: "text-cyan-500", roles: ["admin", "manager"] },
-  { key: "7", label: "Reportes", href: "/dashboard/reports", icon: FileBarChart, color: "text-orange-500", roles: ["admin", "manager", "viewer"] },
-  { key: "8", label: "Calendario", href: "/dashboard/calendar", icon: CalendarDays, color: "text-pink-500", roles: ["admin", "manager"] },
-  { key: "9", label: "Categorias", href: "/dashboard/categories", icon: Tags, color: "text-indigo-500", roles: ["admin"] },
-  { key: "0", label: "Proveedores", href: "/dashboard/suppliers", icon: Truck, color: "text-teal-500", roles: ["admin"] },
-  { key: "U", label: "Usuarios", href: "/dashboard/users", icon: Users, color: "text-red-500", roles: ["admin"] },
-  { key: "C", label: "Configuracion", href: "/dashboard/settings", icon: Settings, color: "text-gray-500", roles: ["admin"] },
-  { key: "D", label: "Base de Datos", href: "/dashboard/database", icon: Database, color: "text-slate-500", roles: ["admin"] },
-]
+import { navigationItems } from "@/lib/navigation-items"
 
 export default function DashboardPage() {
   const { products, stock, categories, movements, promotions, currentUser, settings } = useStore()
@@ -92,7 +65,7 @@ export default function DashboardPage() {
   const isAdmin = currentUser?.role === "admin"
 
   // Filter menu items based on role
-  const availableMenuItems = menuItems.filter(item => 
+  const availableMenuItems = navigationItems.filter(item =>
     currentUser && item.roles.includes(currentUser.role)
   )
 
@@ -202,7 +175,7 @@ export default function DashboardPage() {
                         <div className={cn("p-3 rounded-lg bg-muted", item.color)}>
                           <Icon className="h-6 w-6" />
                         </div>
-                        <span className="text-sm font-medium text-center">{item.label}</span>
+                        <span className="text-sm font-medium text-center">{item.name}</span>
                         <kbd className="text-xs bg-muted px-2 py-0.5 rounded font-mono">{item.key}</kbd>
                       </div>
                     </Link>

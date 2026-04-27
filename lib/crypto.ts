@@ -5,10 +5,20 @@
  */
 
 export async function hashPassword(password: string): Promise<string> {
-  // Add a salt prefix for basic security
-  const salt = "superstock_local_salt_v1"
-  const data = new TextEncoder().encode(salt + password)
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data)
+  // Use a more complex and unique salt for the local application
+  // In a real production environment with a backend, we would use bcrypt or argon2
+  // with a unique salt per user. Since this is a client-side "local" app,
+  // we use a fixed but complex system salt.
+  const systemSalt = "supert_secure_v2_982347293847"
+  const data = new TextEncoder().encode(systemSalt + password + systemSalt.split('').reverse().join(''))
+
+  // Perform multiple rounds of hashing (simple iteration) to increase computational cost
+  let hashBuffer = await crypto.subtle.digest("SHA-256", data)
+
+  for (let i = 0; i < 10; i++) {
+    hashBuffer = await crypto.subtle.digest("SHA-256", hashBuffer)
+  }
+
   const hashArray = Array.from(new Uint8Array(hashBuffer))
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("")
 }
