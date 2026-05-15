@@ -1,44 +1,120 @@
 # Super T - Supermarket Management System
 
-A comprehensive web-based management system for supermarkets, featuring Point of Sale (POS), Inventory Management, and detailed Reporting.
+A modern web-based supermarket management platform designed for small and medium retail businesses. The system includes Point of Sale (POS), Inventory Management, Reporting, Customer Management, Supplier Tracking, and secure local persistence.
 
-## Project Purpose
-The purpose of this project is to provide supermarket owners and managers with a robust, all-in-one platform to manage their daily operations. This includes tracking stock levels, processing sales, managing suppliers and customers, and generating financial and inventory reports to make data-driven decisions.
+The application is built with a modular architecture optimized for scalability, maintainability, and future migration to full database backends.
 
-## Technology and Tools Used
-- **Frontend**: [Next.js](https://nextjs.org/) (React Framework)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **UI Components**: [Radix UI](https://www.radix-ui.com/) and [Lucide React](https://lucide.dev/) for icons.
-- **Charts**: [Recharts](https://recharts.org/) for data visualization.
-- **State Management**: React Context API with a custom Store Provider.
-- **Persistence**: Browser `localStorage` with a repository pattern that supports future migrations (e.g., SQLite).
-- **Security**: Web Crypto API for secure password hashing.
-- **Forms**: React Hook Form with Zod validation.
+---
 
-## Implementation Guide
+# Project Purpose
 
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or pnpm
+The purpose of this project is to provide supermarket owners and managers with a complete operational platform to manage daily business activities from a single interface.
 
-### Installation
-1. Clone the repository.
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Run the development server:
-   ```bash
-   npm run dev
-   ```
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Core objectives include:
 
-### Default Credentials
-- **Email**: `admin@supert.com`
-- **Password**: `admin123`
+- Processing sales through an integrated POS system
+- Managing inventory and stock levels
+- Tracking suppliers and customers
+- Generating financial and operational reports
+- Maintaining persistent local data storage
+- Providing role-based access control
+- Supporting future migration to SQLite or cloud backends
 
-### Key Features
-- **Unified Workflow**: A single, consistent navigation menu across the sidebar and dashboard.
-- **Persistence**: Data is automatically saved to your browser's local storage after the first entry.
-- **Role-Based Access**: Support for Admin, Manager, and Viewer roles with appropriate permissions.
-- **Database Management**: Export and import full database backups in SQL format or individual tables in CSV.
+---
+
+# Technology Stack
+
+## Frontend
+
+- Next.js
+- React
+- TypeScript
+
+## Styling
+
+- Tailwind CSS
+
+## UI Components
+
+- Radix UI
+- Lucide React
+
+## Forms and Validation
+
+- React Hook Form
+- Zod
+
+## Charts and Analytics
+
+- Recharts
+
+## State Management
+
+- React Context API
+- Custom Store Provider
+
+## Persistence
+
+- Browser localStorage
+- Repository Pattern abstraction layer
+
+## Security
+
+- Web Crypto API for password hashing
+
+---
+
+# Key Features
+
+## Point of Sale (POS)
+
+- Fast checkout workflow
+- Cart management
+- Receipt generation
+- Payment handling
+- Sales tracking
+
+## Inventory Management
+
+- Product registration
+- Stock monitoring
+- Low-stock alerts
+- Category management
+- Barcode support preparation
+
+## Reporting
+
+- Sales reports
+- Inventory reports
+- Financial summaries
+- Dashboard analytics
+- Visual charts
+
+## User Management
+
+- Role-based access control
+- Admin
+- Manager
+- Viewer
+
+## Data Persistence
+
+- Automatic local storage persistence
+- SQL backup export
+- CSV table export
+- Database import/export support
+
+## Unified UI Workflow
+
+- Consistent sidebar navigation
+- Shared dashboard experience
+- Reusable UI components
+
+---
+
+# Screenshots
+
+Add screenshots here in the future:
+
+```text
+/docs/screenshots/
